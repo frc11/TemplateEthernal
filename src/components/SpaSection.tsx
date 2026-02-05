@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const treatments = [
     {
@@ -23,7 +24,7 @@ const treatments = [
 
 export default function SpaSection() {
     return (
-        <section className="relative py-32 overflow-hidden bg-[#FDFDFB]">
+        <section id="wellness" className="relative py-32 overflow-hidden bg-[#FDFDFB]">
 
             {/* Animated Ethereal Background */}
             <div className="absolute inset-0 z-0 overflow-hidden">
@@ -91,6 +92,19 @@ export default function SpaSection() {
                             </div>
                         </motion.div>
                     ))}
+                </div>
+                <div className="flex justify-center mt-20">
+                    <Link to="/wellness">
+                        <motion.button
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.4, duration: 0.8 }}
+                            className="px-12 py-5 bg-white/20 backdrop-blur-md border border-white/40 text-charcoal rounded-full text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-white transition-all shadow-xl"
+                        >
+                            Discover Treatments
+                        </motion.button>
+                    </Link>
                 </div>
 
             </div>

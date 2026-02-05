@@ -1,36 +1,13 @@
 import { motion } from 'framer-motion';
-
-const menuItems = [
-    {
-        name: "Seared Scallops",
-        price: "$42",
-        ingredients: "Cauliflower purée, truffle oil, micro-greens."
-    },
-    {
-        name: "Wild Mushroom Risotto",
-        price: "$38",
-        ingredients: "Arborio rice, porcini dust, parmesan crisp."
-    },
-    {
-        name: "Pan-Roasted Sea Bass",
-        price: "$55",
-        ingredients: "Saffron broth, fennel confit, citrus foam."
-    },
-    {
-        name: "Herb-Crusted Lamb",
-        price: "$65",
-        ingredients: "Rosemary reduction, root vegetable pavé."
-    },
-    {
-        name: "Dark Chocolate Tart",
-        price: "$24",
-        ingredients: "Sea salt, raspberry coulis, gold leaf."
-    }
-];
+import { menuItems } from '../data/dining';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { Link } from 'react-router-dom';
 
 export default function Dining() {
+    const { ref, isInView } = useScrollAnimation();
+
     return (
-        <section className="min-h-screen bg-cream flex flex-col md:flex-row items-center overflow-hidden">
+        <section id="dining" ref={ref} className="min-h-screen bg-cream flex flex-col md:flex-row items-center overflow-hidden">
 
             {/* Left: Rotating Visual */}
             <div className="w-full md:w-1/2 h-[50vh] md:h-screen flex items-center justify-center relative bg-[#EBEBE6]">
@@ -52,10 +29,15 @@ export default function Dining() {
             </div>
 
             {/* Right: Menu */}
-            <div className="w-full md:w-1/2 min-h-[50vh] flex flex-col justify-center px-8 md:px-20 py-20">
+            <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="w-full md:w-1/2 min-h-[50vh] flex flex-col justify-center px-8 md:px-20 py-20"
+            >
                 <h2 className="text-xs uppercase tracking-[0.2em] text-charcoal/60 mb-12">Culinary Arts</h2>
 
-                <div className="flex flex-col gap-8">
+                <div id="menu" className="flex flex-col gap-8">
                     {menuItems.map((item, index) => (
                         <motion.div
                             key={index}
@@ -94,12 +76,18 @@ export default function Dining() {
                     ))}
                 </div>
 
-                <div className="mt-16">
-                    <button className="text-xs uppercase tracking-widest border-b border-charcoal/30 pb-1 hover:border-charcoal transition-colors">
-                        View Full Menu
-                    </button>
+                <div className="mt-16 text-left">
+                    <Link to="/dining" className="group relative text-[10px] uppercase tracking-[0.3em] font-bold text-charcoal flex items-center gap-3 w-fit">
+                        <span>Explore Our Menus</span>
+                        <motion.span
+                            animate={{ x: [0, 5, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                            →
+                        </motion.span>
+                    </Link>
                 </div>
-            </div>
+            </motion.div>
 
         </section>
     );

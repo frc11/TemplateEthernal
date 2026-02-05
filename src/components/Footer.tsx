@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Instagram, Facebook, Twitter, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
     return (
@@ -12,10 +13,10 @@ export default function Footer() {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-12 font-light text-sm md:text-base text-cream/60">
                     <div className="flex flex-col gap-4">
                         <h4 className="text-cream uppercase tracking-widest mb-2 text-xs">Explore</h4>
-                        <a href="#" className="hover:text-cream transition-colors">Villas</a>
-                        <a href="#" className="hover:text-cream transition-colors">Dining</a>
-                        <a href="#" className="hover:text-cream transition-colors">Wellness</a>
-                        <a href="#" className="hover:text-cream transition-colors">Experiences</a>
+                        <Link to="/rooms" className="hover:text-cream transition-colors">Villas</Link>
+                        <Link to="/dining" className="hover:text-cream transition-colors">Dining</Link>
+                        <Link to="/wellness" className="hover:text-cream transition-colors">Wellness</Link>
+                        <Link to="/contact" className="hover:text-cream transition-colors">Contact</Link>
                     </div>
                     <div className="flex flex-col gap-4">
                         <h4 className="text-cream uppercase tracking-widest mb-2 text-xs">Company</h4>

@@ -45,6 +45,9 @@ export default function PoolOasis() {
                         </motion.div>
                     )}
                 </AnimatePresence>
+
+                {/* Cinematic Gradient Overlay for Readability */}
+                <div className="absolute inset-0 z-[1] bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60" />
             </div>
 
             {/* Content */}
@@ -70,7 +73,7 @@ export default function PoolOasis() {
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="font-serif text-5xl md:text-8xl mb-6 tracking-tight"
+                    className={`font-serif text-5xl md:text-8xl mb-6 tracking-tight drop-shadow-2xl ${isNight ? 'text-cream' : 'text-white md:text-charcoal'}`}
                 >
                     {isNight ? "Moonlight Serenity" : "The Water Lounge"}
                 </motion.h2>
@@ -80,7 +83,7 @@ export default function PoolOasis() {
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
-                    className={`text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed ${isNight ? 'text-cream/80' : 'text-charcoal/80'}`}
+                    className={`text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed drop-shadow-lg ${isNight ? 'text-cream/90' : 'text-white md:text-charcoal/90'}`}
                 >
                     {isNight
                         ? "As the sun sets, the water turns into a mirror of stars. Experience our exclusive night bar with ambient sounds and crafted mixology."

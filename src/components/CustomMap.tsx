@@ -1,80 +1,162 @@
-import { motion } from 'framer-motion';
-import { MapPin } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MapPin, Info, ArrowRight } from 'lucide-react';
 
-const pois = [
-    { id: 1, label: "Private Beach", x: 20, y: 40, image: "https://images.pexels.com/photos/1743231/pexels-photo-1743231.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" },
-    { id: 2, label: "Main Lodge", x: 50, y: 50, image: "https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" },
-    { id: 3, label: "Spa Sanctuary", x: 75, y: 30, image: "https://images.pexels.com/photos/7061662/pexels-photo-7061662.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" },
-    { id: 4, label: "Ocean Villas", x: 35, y: 70, image: "https://images.pexels.com/photos/2416075/pexels-photo-2416075.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" },
-    { id: 5, label: "Rainforest Trail", x: 80, y: 65, image: "https://images.pexels.com/photos/90317/pexels-photo-90317.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" },
+interface PointOfInterest {
+    id: number;
+    x: number;
+    y: number;
+    title: string;
+    description: string;
+    image: string;
+}
+
+const pointsOfInterest: PointOfInterest[] = [
+    {
+        id: 1,
+        x: 30,
+        y: 45,
+        title: "The Ocean Villas",
+        description: "Private infinity pools facing the sunset and curated organic amenities.",
+        image: "https://images.pexels.com/photos/247532/pexels-photo-247532.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    },
+    {
+        id: 2,
+        x: 65,
+        y: 35,
+        title: "Serenity Spa",
+        description: "World-class holistic treatments integrated with the sounds of the surrounding forest.",
+        image: "https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    },
+    {
+        id: 3,
+        x: 52,
+        y: 72,
+        title: "Azure Dining",
+        description: "A Michelin-star culinary journey focused on sustainable sea-to-table excellence.",
+        image: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    }
 ];
 
-export default function CustomMap() {
+interface CustomMapProps {
+    height?: string;
+}
+
+export default function CustomMap({ height = "80vh" }: CustomMapProps) {
+    const [hoveredPoint, setHoveredPoint] = useState<PointOfInterest | null>(null);
+
     return (
-        <section className="relative h-[80vh] w-full bg-[#E3E0D6] overflow-hidden flex items-center justify-center">
+        <section
+            className="relative w-full bg-[#E3E0D6] overflow-hidden flex items-center justify-center p-4 md:p-12"
+            style={{ height }}
+        >
+            {/* Map Container - The Paper/Canvas */}
+            <div className="relative w-full h-full max-w-7xl mx-auto rounded-[2.5rem] overflow-hidden shadow-2xl shadow-sand/30 border border-sand/30">
 
-            {/* Map Background (Stylized) */}
-            <div className="absolute inset-0 opacity-40 mix-blend-multiply pointer-events-none">
-                {/* Using a texture overlay to give it a 'paper' feel */}
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] opacity-80" />
+                {/* Background Map Image - Stylized Texture */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074&auto=format&fit=crop"
+                        alt="Ethereal Grounds Map"
+                        className="w-full h-full object-cover grayscale opacity-90 contrast-125 saturate-50"
+                    />
+                    {/* Artistic Overlays */}
+                    <div className="absolute inset-0 bg-sand/10 mix-blend-multiply" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_transparent_20%,_rgba(0,0,0,0.2)_100%)]" />
+                    <div className="absolute inset-0 pointer-events-none opacity-20"
+                        style={{ backgroundImage: 'radial-gradient(circle, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+                </div>
 
-                {/* Abstract topography lines (simulated with CSS radial gradients for this demo, usually an SVG) */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,_transparent_10%,_rgba(168,162,158,0.2)_11%,_transparent_12%)] bg-[length:40px_40px]" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,_transparent_10%,_rgba(168,162,158,0.2)_11%,_transparent_12%)] bg-[length:60px_60px]" />
-            </div>
+                {/* Markers Layer */}
+                <div className="absolute inset-0 z-10">
+                    {pointsOfInterest.map((point) => (
+                        <div
+                            key={point.id}
+                            className="absolute group"
+                            style={{ left: `${point.x}%`, top: `${point.y}%` }}
+                        >
+                            <div className="relative flex items-center justify-center -translate-x-1/2 -translate-y-1/2">
+                                {/* Pulsing Halo */}
+                                <motion.div
+                                    animate={{
+                                        scale: [1, 2.5],
+                                        opacity: [0.6, 0]
+                                    }}
+                                    transition={{
+                                        duration: 2.5,
+                                        repeat: Infinity,
+                                        ease: "easeOut"
+                                    }}
+                                    className="absolute inset-0 w-8 h-8 rounded-full bg-charcoal/20"
+                                />
 
-            {/* Main Map Image (Stylized) */}
-            <div className="relative w-full h-full max-w-6xl max-h-[800px] p-10">
-                <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/e/ec/USA_Vermont_location_map.svg" // Placeholder SVG map - styling applied below
-                    alt="Resort Map"
-                    className="w-full h-full object-contain opacity-20 contrast-150 sepia-[.5] hue-rotate-15"
-                />
+                                {/* Interactive Core Pin */}
+                                <motion.button
+                                    onMouseEnter={() => setHoveredPoint(point)}
+                                    onMouseLeave={() => setHoveredPoint(null)}
+                                    whileHover={{ scale: 1.2 }}
+                                    className="relative z-20 w-4 h-4 rounded-full bg-charcoal border-2 border-white shadow-lg transition-transform"
+                                    aria-label={`Learn more about ${point.title}`}
+                                >
+                                    <div className="absolute inset-0 rounded-full animate-pulse bg-white/40" />
+                                </motion.button>
 
-                {/* Points of Interest */}
-                {pois.map((poi) => (
-                    <div
-                        key={poi.id}
-                        className="absolute group z-10"
-                        style={{ left: `${poi.x}%`, top: `${poi.y}%` }}
-                    >
-                        {/* Pulsating Circle */}
-                        <div className="relative flex items-center justify-center w-6 h-6 -translate-x-1/2 -translate-y-1/2 cursor-pointer">
-                            <motion.div
-                                animate={{ scale: [1, 2.5], opacity: [0.6, 0] }}
-                                transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-                                className="absolute inset-0 bg-charcoal rounded-full"
-                            />
-                            <div className="w-2 h-2 bg-charcoal rounded-full relative z-10" />
+                                {/* Tooltip Card */}
+                                <AnimatePresence>
+                                    {hoveredPoint?.id === point.id && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: 10, scale: 0.9 }}
+                                            transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}
+                                            className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 w-72 bg-white/80 backdrop-blur-xl rounded-3xl p-5 shadow-2xl border border-white/40 pointer-events-none"
+                                        >
+                                            <div className="relative aspect-video rounded-2xl overflow-hidden mb-4 shadow-sm border border-black/5">
+                                                <img src={point.image} alt={point.title} className="w-full h-full object-cover" />
+                                            </div>
+                                            <h3 className="font-serif text-xl text-charcoal mb-2">{point.title}</h3>
+                                            <p className="text-[11px] leading-relaxed text-charcoal/60 font-medium">
+                                                {point.description}
+                                            </p>
 
-                            {/* Tooltip */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                                whileInView={{ opacity: 0, y: 10, scale: 0.9 }} // Default state
-                                whileHover={{ opacity: 1, y: 0, scale: 1 }} // Hover state
-                                transition={{ duration: 0.3 }}
-                                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-40 bg-white p-2 rounded-lg shadow-xl pointer-events-none opacity-0 group-hover:opacity-100"
-                            >
-                                <div className="h-24 w-full overflow-hidden rounded mb-2">
-                                    <img src={poi.image} alt={poi.label} className="w-full h-full object-cover" />
-                                </div>
-                                <p className="text-center font-serif text-sm text-charcoal">{poi.label}</p>
+                                            <div className="mt-4 pt-4 border-t border-black/5 flex items-center justify-between">
+                                                <span className="text-[9px] uppercase tracking-widest text-charcoal/40">Destination {point.id}</span>
+                                                <ArrowRight size={12} className="text-charcoal/40" />
+                                            </div>
 
-                                {/* Arrow */}
-                                <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-white" />
-                            </motion.div>
+                                            {/* Pointer Arrow */}
+                                            <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-white/80" />
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Floating Map Legend */}
+                <div className="absolute top-8 left-8 z-20">
+                    <div className="bg-charcoal/90 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/10 shadow-xl">
+                        <div className="flex items-center gap-3">
+                            <MapPin size={16} className="text-sand" />
+                            <h2 className="text-xs uppercase tracking-[0.3em] font-medium text-white">The Grounds</h2>
                         </div>
                     </div>
-                ))}
-            </div>
+                </div>
 
-            <div className="absolute bottom-10 left-10 z-20">
-                <h2 className="font-serif text-3xl text-charcoal/80">Explore the Grounds</h2>
-                <p className="text-sm text-charcoal/60 flex items-center gap-2 mt-2">
-                    <MapPin size={16} /> Drag/Zoom not enabled (Static Artist Map)
-                </p>
-            </div>
+                {/* Interaction Hint */}
+                <div className="absolute bottom-8 right-8 z-20">
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/20 flex items-center gap-3"
+                    >
+                        <Info size={14} className="text-white/60" />
+                        <span className="text-[9px] uppercase tracking-widest text-white/60">Hover hotspots to explore rituals</span>
+                    </motion.div>
+                </div>
 
+            </div>
         </section>
     );
 }

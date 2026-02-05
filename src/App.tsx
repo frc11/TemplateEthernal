@@ -1,39 +1,44 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense, lazy } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Lenis from '@studio-freight/lenis';
 import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Philosophy from './components/Philosophy';
-import RoomShowcase from './components/RoomShowcase';
-import Services from './components/Services';
-import PoolOasis from './components/PoolOasis';
-import Dining from './components/Dining';
-import SpaSection from './components/SpaSection';
-import CustomMap from './components/CustomMap';
-import Testimonials from './components/Testimonials';
-import Concierge from './components/Concierge';
-import Footer from './components/Footer';
 import Preloader from './components/Preloader';
 import CustomCursor from './components/CustomCursor';
 import NoiseOverlay from './components/NoiseOverlay';
+import SEO from './components/SEO';
+import SectionLoader from './components/SectionLoader';
+import ScrollToTop from './components/ScrollToTop';
+import { BookingProvider } from './context/BookingContext';
+
+// Lazy Load Pages
+const Home = lazy(() => import('./pages/Home'));
+const Rooms = lazy(() => import('./pages/RoomsIndex'));
+const DiningPage = lazy(() => import('./pages/DiningPage'));
+const Wellness = lazy(() => import('./pages/Wellness'));
+const Contact = lazy(() => import('./pages/Contact'));
+const RoomDetail = lazy(() => import('./pages/RoomDetail'));
+const Checkout = lazy(() => import('./pages/Checkout'));
+const Footer = lazy(() => import('./components/Footer'));
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
+    const location = useLocation();
 
     useEffect(() => {
         // Simulate loading time
         const timer = setTimeout(() => {
+            setIsLoading(true); // Keep it true initially for first load
             setIsLoading(false);
         }, 2500);
 
         const lenis = new Lenis({
-            duration: 2.0, // Increased for "heavier" feel
+            duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             orientation: 'vertical',
             gestureOrientation: 'vertical',
             smoothWheel: true,
-            wheelMultiplier: 0.8, // Slightly reduced to give "weight"
-            touchMultiplier: 2,
+            wheelMultiplier: 1,
         });
 
         function raf(time: number) {
@@ -50,38 +55,37 @@ function App() {
     }, []);
 
     return (
-        <main className="min-h-screen w-full relative bg-cream cursor-none">
-            <CustomCursor />
-            <NoiseOverlay />
+        <BookingProvider>
+            <main className="min-h-screen w-full relative bg-cream cursor-none">
+                <ScrollToTop />
+                <SEO />
+                <CustomCursor />
+                <NoiseOverlay />
 
-            <AnimatePresence mode='wait'>
-                {isLoading && <Preloader key="preloader" />}
-            </AnimatePresence>
+                <AnimatePresence mode='wait'>
+                    {isLoading && <Preloader key="preloader" />}
+                </AnimatePresence>
 
-            <Navbar />
+                <Navbar />
 
-            <Hero />
+                <Routes>
+                    <Route path="/" element={<Suspense fallback={<SectionLoader />}><Home /></Suspense>} />
+                    <Route path="/rooms" element={<Suspense fallback={<SectionLoader />}><Rooms /></Suspense>} />
+                    <Route path="/dining" element={<Suspense fallback={<SectionLoader />}><DiningPage /></Suspense>} />
+                    <Route path="/wellness" element={<Suspense fallback={<SectionLoader />}><Wellness /></Suspense>} />
+                    <Route path="/contact" element={<Suspense fallback={<SectionLoader />}><Contact /></Suspense>} />
+                    <Route path="/rooms/:id" element={<Suspense fallback={<SectionLoader />}><RoomDetail /></Suspense>} />
+                    <Route path="/checkout" element={<Suspense fallback={<SectionLoader />}><Checkout /></Suspense>} />
+                </Routes>
 
-            <Philosophy />
+                {location.pathname !== '/checkout' && (
+                    <Suspense fallback={null}>
+                        <Footer />
+                    </Suspense>
+                )}
 
-            <RoomShowcase />
-
-            <Services />
-
-            <PoolOasis />
-
-            <Dining />
-
-            <SpaSection />
-
-            <CustomMap />
-
-            <Testimonials />
-
-            <Footer />
-
-            <Concierge />
-        </main>
+            </main>
+        </BookingProvider>
     )
 }
 

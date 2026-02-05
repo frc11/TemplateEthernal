@@ -1,0 +1,72 @@
+/* Custom overrides for react-datepicker to match Ethereal Resort branding */
+.react-datepicker {
+    background-color: #f8f6f2 !important;
+    /* cream-beige */
+    border: 1px solid rgba(26, 26, 26, 0.1) !important;
+    border-radius: 1.5rem !important;
+    font-family: 'Manrope', sans-serif !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+}
+
+.react-datepicker__header {
+    background-color: transparent !important;
+    border-bottom: none !important;
+    padding-top: 0 !important;
+}
+
+.react-datepicker__current-month {
+    font-family: 'Playfair Display', serif !important;
+    font-size: 1.25rem !important;
+    color: #1a1a1a !important;
+    margin-bottom: 1rem !important;
+}
+
+.react-datepicker__day-name {
+    color: #1a1a1a66 !important;
+    font-size: 0.7rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.2em !important;
+    width: 2.5rem !important;
+}
+
+.react-datepicker__day {
+    color: #1a1a1a !important;
+    font-size: 0.875rem !important;
+    width: 2.5rem !important;
+    line-height: 2.5rem !important;
+    border-radius: 50% !important;
+    transition: all 0.2s ease !important;
+}
+
+.react-datepicker__day:hover {
+    background-color: #1a1a1a11 !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--in-range,
+.react-datepicker__day--keyboard-selected {
+    background-color: #1a1a1a !important;
+    color: #f8f6f2 !important;
+}
+
+.react-datepicker__day--outside-month {
+    color: #1a1a1a22 !important;
+}
+
+.react-datepicker__day--disabled {
+    color: #1a1a1a11 !important;
+    text-decoration: line-through !important;
+}
+
+.react-datepicker__triangle {
+    display: none !important;
+}
+
+.react-datepicker__navigation {
+    top: 1.5rem !important;
+}
+
+.react-datepicker__month-container {
+    float: none !important;
+}

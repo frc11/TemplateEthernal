@@ -1,9 +1,8 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform, useInView, Variants } from 'framer-motion';
+import { motion, useScroll, useTransform, Variants } from 'framer-motion';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 export default function Philosophy() {
-    const containerRef = useRef(null);
-    const isInView = useInView(containerRef, { once: true, margin: "-10%" });
+    const { ref: containerRef, isInView } = useScrollAnimation();
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -53,13 +52,13 @@ export default function Philosophy() {
                         Our Philosophy
                     </motion.h2>
 
-                    <h3 className="font-serif text-3xl md:text-5xl lg:text-6xl text-charcoal leading-tight">
+                    <p className="font-serif text-3xl md:text-5xl lg:text-6xl text-charcoal leading-tight">
                         {text.split(" ").map((word, i) => (
                             <motion.span key={i} variants={itemVariants} className="inline-block mr-[0.25em]">
                                 {word}
                             </motion.span>
                         ))}
-                    </h3>
+                    </p>
                 </motion.div>
             </div>
 

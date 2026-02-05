@@ -1,24 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-
-const testimonials = [
-    {
-        id: 1,
-        quote: "A place where time dissolves into the horizon. I found myself in the silence.",
-        author: "Elena V., Architect"
-    },
-    {
-        id: 2,
-        quote: "The Ethereal isn't just a hotel; it is a return to a rhythm we have long forgotten.",
-        author: "James C., Writer"
-    },
-    {
-        id: 3,
-        quote: "Every detail whispers of nature. A sanctuary for the weary soul.",
-        author: "Sarah L., Artist"
-    }
-];
+import { testimonials } from '../data/testimonials';
 
 export default function Testimonials() {
     const [current, setCurrent] = useState(0);
@@ -42,7 +25,11 @@ export default function Testimonials() {
             <div className="relative z-10 max-w-5xl px-12 md:px-24 w-full flex items-center justify-between">
 
                 {/* Navigation Left */}
-                <button onClick={prev} className="p-4 text-cream/50 hover:text-cream transition-colors group">
+                <button
+                    onClick={prev}
+                    aria-label="Previous testimonial"
+                    className="p-4 text-cream/50 hover:text-cream transition-colors group"
+                >
                     <ArrowLeft strokeWidth={0.5} size={48} className="group-hover:-translate-x-2 transition-transform duration-500" />
                 </button>
 
@@ -67,7 +54,11 @@ export default function Testimonials() {
                 </div>
 
                 {/* Navigation Right */}
-                <button onClick={next} className="p-4 text-cream/50 hover:text-cream transition-colors group">
+                <button
+                    onClick={next}
+                    aria-label="Next testimonial"
+                    className="p-4 text-cream/50 hover:text-cream transition-colors group"
+                >
                     <ArrowRight strokeWidth={0.5} size={48} className="group-hover:translate-x-2 transition-transform duration-500" />
                 </button>
 
