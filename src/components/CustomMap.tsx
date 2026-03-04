@@ -35,6 +35,38 @@ const pointsOfInterest: PointOfInterest[] = [
         title: "Azure Dining",
         description: "A Michelin-star culinary journey focused on sustainable sea-to-table excellence.",
         image: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    },
+    {
+        id: 4,
+        x: 75,
+        y: 20,
+        title: "Mountain Retreat",
+        description: "High-altitude chalets offering panoramic snow-capped views and alpine luxury.",
+        image: "https://images.pexels.com/photos/1571442/pexels-photo-1571442.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    },
+    {
+        id: 5,
+        x: 20,
+        y: 60,
+        title: "Jungle Sanctuary",
+        description: "Immersive treehouses surrounded by vibrant biodiversity and ancient ruins.",
+        image: "https://images.pexels.com/photos/2583852/pexels-photo-2583852.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    },
+    {
+        id: 6,
+        x: 88,
+        y: 55,
+        title: "Zen Gardens",
+        description: "Minimalist traditional pavilions set within meticulously raked sand and koi ponds.",
+        image: "https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?q=80&w=2076&auto=format&fit=crop"
+    },
+    {
+        id: 7,
+        x: 45,
+        y: 25,
+        title: "The Ice Fjords",
+        description: "Glass igloos providing an unobstructed view of the Northern Lights.",
+        image: "https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?q=80&w=1965&auto=format&fit=crop"
     }
 ];
 
@@ -47,14 +79,14 @@ export default function CustomMap({ height = "80vh" }: CustomMapProps) {
 
     return (
         <section
-            className="relative w-full bg-[#E3E0D6] overflow-hidden flex items-center justify-center p-4 md:p-12"
+            className="relative w-full bg-[#E3E0D6] flex items-center justify-center p-4 md:p-12"
             style={{ height }}
         >
             {/* Map Container - The Paper/Canvas */}
-            <div className="relative w-full h-full max-w-7xl mx-auto rounded-[2.5rem] overflow-hidden shadow-2xl shadow-sand/30 border border-sand/30">
+            <div className="relative w-full h-full max-w-7xl mx-auto rounded-[2.5rem] shadow-2xl shadow-sand/30 border border-sand/30">
 
                 {/* Background Map Image - Stylized Texture */}
-                <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 z-0 overflow-hidden rounded-[2.5rem]">
                     <img
                         src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074&auto=format&fit=crop"
                         alt="Ethereal Grounds Map"
@@ -87,18 +119,18 @@ export default function CustomMap({ height = "80vh" }: CustomMapProps) {
                                         repeat: Infinity,
                                         ease: "easeOut"
                                     }}
-                                    className="absolute inset-0 w-8 h-8 rounded-full bg-charcoal/20"
+                                    className="absolute inset-0 w-8 h-8 rounded-full bg-[#E5B582]/40"
                                 />
 
                                 {/* Interactive Core Pin */}
                                 <motion.button
                                     onMouseEnter={() => setHoveredPoint(point)}
                                     onMouseLeave={() => setHoveredPoint(null)}
-                                    whileHover={{ scale: 1.2 }}
-                                    className="relative z-20 w-4 h-4 rounded-full bg-charcoal border-2 border-white shadow-lg transition-transform"
+                                    whileHover={{ scale: 1.3 }}
+                                    className="relative z-20 w-5 h-5 rounded-full bg-[#E5B582] border-2 border-[#1a1a1a] shadow-[0_0_20px_rgba(229,181,130,0.8)] transition-transform group"
                                     aria-label={`Learn more about ${point.title}`}
                                 >
-                                    <div className="absolute inset-0 rounded-full animate-pulse bg-white/40" />
+                                    <div className="absolute inset-0 rounded-full animate-pulse bg-white/40 group-hover:bg-white/60" />
                                 </motion.button>
 
                                 {/* Tooltip Card */}
@@ -149,10 +181,14 @@ export default function CustomMap({ height = "80vh" }: CustomMapProps) {
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/20 flex items-center gap-3"
+                        className="bg-white/95 backdrop-blur-xl px-7 py-4 rounded-full border border-black/10 flex items-center gap-4 shadow-2xl shadow-charcoal/20"
                     >
-                        <Info size={14} className="text-white/60" />
-                        <span className="text-[9px] uppercase tracking-widest text-white/60">Hover hotspots to explore rituals</span>
+                        <div className="bg-[#E5B582] p-1.5 rounded-full shadow-inner">
+                            <Info size={14} className="text-charcoal" />
+                        </div>
+                        <span className="text-[10px] uppercase tracking-[0.25em] font-bold text-charcoal">
+                            Hover hotspots to explore rituals
+                        </span>
                     </motion.div>
                 </div>
 
