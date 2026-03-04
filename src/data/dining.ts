@@ -38,7 +38,7 @@ export const diningData: DiningMenu = {
 };
 
 export const menuItems: MenuItem[] = [
-    { name: "Dusky Wagyu Fillet", description: "30-day aged wagyu...", ingredients: "30-day aged wagyu, charcoal-roasted marrow, wild mushrooms", price: "$85" },
-    { name: "Pacific Reef Carpaccio", description: "Sustainably sourced...", ingredients: "Wild snapper, finger lime, pickled sea grapes", price: "$38" },
-    { name: "Lake Retreat Soup", description: "Local watercress...", ingredients: "Watercress, organic cream, roasted seeds", price: "$26" }
+    { name: "Dusky Wagyu Fillet", description: "30-day aged wagyu...", ingredients: "30-day aged wagyu, charcoal-roasted marrow, wild mushrooms", price: "$85", image: "https://images.pexels.com/photos/3535383/pexels-photo-3535383.jpeg?auto=compress&cs=tinysrgb&w=800" },
+    { name: "Pacific Reef Carpaccio", description: "Sustainably sourced...", ingredients: "Wild snapper, finger lime, pickled sea grapes", price: "$38", image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=2070&auto=format&fit=crop" },
+    { name: "Lake Retreat Soup", description: "Local watercress...", ingredients: "Watercress, organic cream, roasted seeds", price: "$26", image: "https://images.pexels.com/photos/5929/food-salad-dinner-eating.jpg?auto=compress&cs=tinysrgb&w=800" }
 ];

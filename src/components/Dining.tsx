@@ -1,10 +1,17 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { menuItems } from '../data/dining';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { Link } from 'react-router-dom';
 
 export default function Dining() {
     const { ref, isInView } = useScrollAnimation();
+    const [hoveredIdx, setHoveredIdx] = useState(0);
+
+    useEffect(() => {
+        // Randomize initial plate
+        setHoveredIdx(Math.floor(Math.random() * menuItems.length));
+    }, []);
 
     return (
         <section id="dining" ref={ref} className="min-h-screen bg-cream flex flex-col md:flex-row items-center overflow-hidden">
@@ -14,13 +21,20 @@ export default function Dining() {
                 <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-                    className="w-[60vw] h-[60vw] md:w-[35vw] md:h-[35vw] rounded-full overflow-hidden shadow-2xl"
+                    className="relative w-[60vw] h-[60vw] md:w-[35vw] md:h-[35vw] rounded-full overflow-hidden shadow-2xl"
                 >
-                    <img
-                        src="https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                        alt="Culinary Masterpiece"
-                        className="w-full h-full object-cover scale-110"
-                    />
+                    <AnimatePresence mode="popLayout">
+                        <motion.img
+                            key={hoveredIdx}
+                            initial={{ opacity: 0, scale: 1.2 }}
+                            animate={{ opacity: 1, scale: 1.1 }}
+                            exit={{ opacity: 0, scale: 1.2 }}
+                            transition={{ duration: 0.8, ease: "easeInOut" }}
+                            src={menuItems[hoveredIdx].image}
+                            alt={menuItems[hoveredIdx].name}
+                            className="absolute inset-0 w-full h-full object-cover"
+                        />
+                    </AnimatePresence>
                 </motion.div>
                 {/* Decorative Circle */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -42,13 +56,14 @@ export default function Dining() {
                         <motion.div
                             key={index}
                             className="group cursor-pointer"
+                            onMouseEnter={() => setHoveredIdx(index)}
                             initial="rest"
                             whileHover="hover"
-                            animate="rest"
+                            animate={hoveredIdx === index ? "hover" : "rest"}
                         >
                             <div className="flex justify-between items-baseline mb-2 text-charcoal">
-                                <h3 className="font-serif text-2xl md:text-3xl">{item.name}</h3>
-                                <span className="font-medium text-lg text-charcoal/60">{item.price}</span>
+                                <h3 className="font-serif text-2xl md:text-3xl transition-colors duration-500">{item.name}</h3>
+                                <span className={`font-medium text-lg transition-colors duration-500 ${hoveredIdx === index ? 'text-charcoal' : 'text-charcoal/60'}`}>{item.price}</span>
                             </div>
 
                             {/* Divider Line */}
