@@ -11,7 +11,7 @@ export default function RoomShowcase() {
     const [activeCategory, setActiveCategory] = useState('All');
     const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
 
-    const [scrollStep, setScrollStep] = useState(65);
+    const [scrollState, setScrollState] = useState({ step: 65, endOffset: 5 });
 
     const targetRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
@@ -20,9 +20,9 @@ export default function RoomShowcase() {
 
     useEffect(() => {
         const calculateStep = () => {
-            if (window.innerWidth >= 1024) setScrollStep(55); // Card 50vw + Gap 5vw
-            else if (window.innerWidth >= 768) setScrollStep(65); // Card 60vw + Gap 5vw
-            else setScrollStep(85); // Card 80vw + Gap 5vw
+            if (window.innerWidth >= 1024) setScrollState({ step: 55, endOffset: 10 }); // N * 55vw offsets padding
+            else if (window.innerWidth >= 768) setScrollState({ step: 65, endOffset: 5 });
+            else setScrollState({ step: 85, endOffset: 4 });
         };
         calculateStep();
         window.addEventListener('resize', calculateStep);
@@ -34,8 +34,11 @@ export default function RoomShowcase() {
         : rooms.filter(room => room.category === activeCategory);
 
     // Calculate the total horizontal width to scroll precisely.
-    // Total travel = (Number of Transitions) * (Step Distance)
-    const x = useTransform(scrollYProgress, [0, 1], ["0vw", `-${filteredRooms.length * scrollStep}vw`]);
+    // Total travel = (Number of Transitions) * (Step Distance) modified by endOffset to center the last card.
+    const x = useTransform(scrollYProgress, (p) => {
+        const targetX = (filteredRooms.length * scrollState.step) - scrollState.endOffset;
+        return `-${p * targetX}vw`;
+    });
 
     return (
         <section id="rooms" ref={targetRef} className="relative h-[400vh] bg-charcoal">
@@ -135,27 +138,29 @@ export default function RoomShowcase() {
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                            className="group relative w-[80vw] md:w-[60vw] lg:w-[50vw] aspect-[4/5] md:aspect-[16/10] flex-shrink-0 flex items-center justify-center"
+                            className="group relative w-[80vw] md:w-[60vw] lg:w-[50vw] aspect-[4/5] md:aspect-[16/10] flex-shrink-0 flex items-center justify-center cursor-pointer"
                         >
-                            <div className="absolute inset-0 rounded-[3rem] bg-stone-950/40 border border-white/5 backdrop-blur-sm" />
-                            <div className="relative text-center p-12">
-                                <motion.div
-                                    animate={{
-                                        scale: [1, 1.1, 1],
-                                        opacity: [0.3, 0.6, 0.3]
-                                    }}
-                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                    className="mb-8 flex justify-center text-sand/30"
-                                >
-                                    <Sparkles size={48} strokeWidth={0.5} />
-                                </motion.div>
-                                <h3 className="font-serif text-3xl md:text-5xl text-cream/80 italic leading-tight">
-                                    Find your perfect <br /> sanctuary.
-                                </h3>
-                                <div className="mt-8 flex justify-center">
-                                    <div className="w-12 h-px bg-sand/20" />
+                            <Link to="/rooms" className="absolute inset-0 flex items-center justify-center w-full h-full">
+                                <div className="absolute inset-0 rounded-[3rem] bg-stone-950/40 border border-white/5 backdrop-blur-sm group-hover:bg-stone-900/60 transition-colors duration-500" />
+                                <div className="relative text-center p-12 group-hover:scale-105 transition-transform duration-700">
+                                    <motion.div
+                                        animate={{
+                                            scale: [1, 1.1, 1],
+                                            opacity: [0.3, 0.6, 0.3]
+                                        }}
+                                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                        className="mb-8 flex justify-center text-sand/30"
+                                    >
+                                        <Sparkles size={48} strokeWidth={0.5} />
+                                    </motion.div>
+                                    <h3 className="font-serif text-3xl md:text-5xl text-cream/80 italic leading-tight">
+                                        Find your perfect <br /> sanctuary.
+                                    </h3>
+                                    <div className="mt-8 flex justify-center">
+                                        <div className="w-12 h-px bg-sand/20" />
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
                         </motion.div>
                     </AnimatePresence>
                 </motion.div>

@@ -15,9 +15,9 @@ export const rooms: Room[] = [
         id: 1,
         name: "The Ocean Suite",
         price: "$850",
-        image: "https://images.pexels.com/photos/2416075/pexels-photo-2416075.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        image: "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?q=80&w=2574&auto=format&fit=crop",
         gallery: [
-            "https://images.pexels.com/photos/2416075/pexels-photo-2416075.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+            "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?q=80&w=2574&auto=format&fit=crop",
             "https://images.pexels.com/photos/189333/pexels-photo-189333.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
             "https://images.pexels.com/photos/261394/pexels-photo-261394.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
         ],
