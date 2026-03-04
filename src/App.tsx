@@ -10,6 +10,7 @@ import SEO from './components/SEO';
 import SectionLoader from './components/SectionLoader';
 import ScrollToTop from './components/ScrollToTop';
 import { BookingProvider } from './context/BookingContext';
+import PageTransition from './components/PageTransition';
 
 // Lazy Load Pages
 const Home = lazy(() => import('./pages/Home'));
@@ -68,15 +69,17 @@ function App() {
 
                 <Navbar />
 
-                <Routes>
-                    <Route path="/" element={<Suspense fallback={<SectionLoader />}><Home /></Suspense>} />
-                    <Route path="/rooms" element={<Suspense fallback={<SectionLoader />}><Rooms /></Suspense>} />
-                    <Route path="/dining" element={<Suspense fallback={<SectionLoader />}><DiningPage /></Suspense>} />
-                    <Route path="/wellness" element={<Suspense fallback={<SectionLoader />}><Wellness /></Suspense>} />
-                    <Route path="/contact" element={<Suspense fallback={<SectionLoader />}><Contact /></Suspense>} />
-                    <Route path="/rooms/:id" element={<Suspense fallback={<SectionLoader />}><RoomDetail /></Suspense>} />
-                    <Route path="/checkout" element={<Suspense fallback={<SectionLoader />}><Checkout /></Suspense>} />
-                </Routes>
+                <AnimatePresence mode="wait">
+                    <Routes location={location} key={location.pathname}>
+                        <Route path="/" element={<Suspense fallback={<SectionLoader />}><PageTransition><Home /></PageTransition></Suspense>} />
+                        <Route path="/rooms" element={<Suspense fallback={<SectionLoader />}><PageTransition><Rooms /></PageTransition></Suspense>} />
+                        <Route path="/dining" element={<Suspense fallback={<SectionLoader />}><PageTransition><DiningPage /></PageTransition></Suspense>} />
+                        <Route path="/wellness" element={<Suspense fallback={<SectionLoader />}><PageTransition><Wellness /></PageTransition></Suspense>} />
+                        <Route path="/contact" element={<Suspense fallback={<SectionLoader />}><PageTransition><Contact /></PageTransition></Suspense>} />
+                        <Route path="/rooms/:id" element={<Suspense fallback={<SectionLoader />}><PageTransition><RoomDetail /></PageTransition></Suspense>} />
+                        <Route path="/checkout" element={<Suspense fallback={<SectionLoader />}><PageTransition><Checkout /></PageTransition></Suspense>} />
+                    </Routes>
+                </AnimatePresence>
 
                 {location.pathname !== '/checkout' && (
                     <Suspense fallback={null}>
