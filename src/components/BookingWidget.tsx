@@ -17,6 +17,8 @@ export default function BookingWidget({ isStatic = false }: BookingWidgetProps) 
     const [isGuestPopupOpen, setIsGuestPopupOpen] = useState(false);
     const guestPopupRef = useRef<HTMLDivElement>(null);
 
+    const [isSearching, setIsSearching] = useState(false);
+
     // Close guest popup on click outside
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -33,8 +35,33 @@ export default function BookingWidget({ isStatic = false }: BookingWidgetProps) 
         return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     };
 
+    const handleCtaClick = () => {
+        if (booking.roomTypeId) {
+            navigate('/checkout');
+        } else {
+            setIsSearching(true);
+            setTimeout(() => {
+                setIsSearching(false);
+                navigate('/rooms');
+            }, 2000);
+        }
+    };
+
     return (
         <div id="booking" className={`${isStatic ? 'relative w-full' : 'absolute bottom-12 left-1/2 -translate-x-1/2 z-30 hidden md:block w-fit'}`}>
+            <AnimatePresence>
+                {isSearching && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        className="fixed bottom-32 left-1/2 -translate-x-1/2 bg-charcoal text-cream px-6 py-4 rounded-full shadow-2xl z-50 flex items-center gap-3 whitespace-nowrap font-serif tracking-wide border border-white/10"
+                    >
+                        <div className="w-5 h-5 rounded-full border-2 border-white/30 border-t-white animate-spin"></div>
+                        <span className="text-sm">Buscando habitaciones con disponibilidad para estas fechas...</span>
+                    </motion.div>
+                )}
+            </AnimatePresence>
             <div className={`flex flex-col md:flex-row items-stretch md:items-center bg-white shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border border-charcoal/5 p-2 md:p-3 ${isStatic ? 'rounded-3xl' : 'rounded-3xl md:rounded-full'}`}>
 
                 {/* Check In */}
@@ -117,11 +144,18 @@ export default function BookingWidget({ isStatic = false }: BookingWidgetProps) 
                 {/* CTA */}
                 <div className="p-1">
                     <button
-                        onClick={() => navigate('/checkout')}
-                        className="bg-charcoal text-cream h-14 w-full md:w-14 md:rounded-full rounded-2xl flex items-center justify-center gap-3 md:gap-0 hover:bg-black transition-all group"
+                        onClick={handleCtaClick}
+                        disabled={isSearching}
+                        className="bg-charcoal text-cream h-14 w-full md:w-14 md:rounded-full rounded-2xl flex items-center justify-center gap-3 md:gap-0 hover:bg-black transition-all group disabled:opacity-80 disabled:cursor-not-allowed"
                     >
-                        <span className="md:hidden text-xs uppercase tracking-widest font-bold">Discover Availability</span>
-                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        {isSearching ? (
+                            <div className="w-5 h-5 rounded-full border-2 border-white/30 border-t-white animate-spin"></div>
+                        ) : (
+                            <>
+                                <span className="md:hidden text-xs uppercase tracking-widest font-bold">Discover Availability</span>
+                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </>
+                        )}
                     </button>
                 </div>
 
