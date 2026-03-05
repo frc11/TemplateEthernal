@@ -4,12 +4,16 @@ import { X, ArrowRight, Expand, Sparkles } from 'lucide-react';
 import { rooms, Room } from '../data/rooms';
 import SmartImage from './ui/SmartImage';
 import { Link } from 'react-router-dom';
+import BookingWidget from './BookingWidget';
+import { useBooking } from '../context/BookingContext';
 
 const CATEGORIES = ['All', 'Suites', 'Villas', 'View'];
 
 export default function RoomShowcase() {
     const [activeCategory, setActiveCategory] = useState('All');
     const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+    const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+    const { setRoomType } = useBooking();
 
     const [scrollState, setScrollState] = useState({ step: 65, endOffset: 5 });
 
@@ -259,11 +263,15 @@ export default function RoomShowcase() {
                                                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                                             </button>
                                         </Link>
-                                        <Link to="/checkout" className="flex-1">
-                                            <button className="w-full border border-white/10 text-cream px-10 py-5 rounded-full text-xs uppercase tracking-[0.2em] font-bold hover:bg-white/5 transition-all">
-                                                Fast Reservation
-                                            </button>
-                                        </Link>
+                                        <button
+                                            onClick={() => {
+                                                setRoomType(selectedRoom.id);
+                                                setIsBookingModalOpen(true);
+                                            }}
+                                            className="flex-1 w-full border border-white/10 text-cream px-10 py-5 rounded-full text-xs uppercase tracking-[0.2em] font-bold hover:bg-white/5 transition-all"
+                                        >
+                                            Fast Reservation
+                                        </button>
                                     </motion.div>
                                 </div>
                             </div>
@@ -274,6 +282,53 @@ export default function RoomShowcase() {
                             >
                                 <X size={24} strokeWidth={1} />
                             </button>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Modal-style Booking Overlay */}
+            <AnimatePresence>
+                {isBookingModalOpen && selectedRoom && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] bg-charcoal/60 backdrop-blur-xl flex items-center justify-center p-6"
+                        onClick={() => setIsBookingModalOpen(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, y: 20 }}
+                            animate={{ scale: 1, y: 0 }}
+                            exit={{ scale: 0.9, y: 20 }}
+                            className="w-full max-w-4xl"
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <div className="bg-cream rounded-[3rem] p-12 relative shadow-2xl overflow-hidden min-h-[500px] flex flex-col justify-center">
+                                {/* Decorative elements */}
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-sand/10 rounded-full -mr-32 -mt-32 blur-3xl opacity-50" />
+
+                                <div className="relative z-10 text-center mb-16 px-10">
+                                    <span className="text-xs uppercase tracking-[0.3em] text-charcoal/40 mb-4 block">Reservation Request</span>
+                                    <h2 className="font-serif text-5xl text-charcoal">Secure Your Sanctuary.</h2>
+                                    <p className="text-charcoal/60 mt-4 max-w-lg mx-auto font-light">
+                                        You are booking <span className="text-charcoal font-medium">{selectedRoom.name}</span> for <span className="text-charcoal font-medium">{selectedRoom.price}</span> per night.
+                                    </p>
+                                </div>
+
+                                <div className="relative z-20 flex justify-center">
+                                    <div className="scale-110">
+                                        <BookingWidget isStatic={true} />
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={() => setIsBookingModalOpen(false)}
+                                    className="absolute top-10 right-10 w-12 h-12 rounded-full border border-charcoal/10 flex items-center justify-center text-charcoal/40 hover:text-charcoal hover:border-charcoal/20 transition-all active:scale-90"
+                                >
+                                    <span className="text-2xl font-light">×</span>
+                                </button>
+                            </div>
                         </motion.div>
                     </motion.div>
                 )}

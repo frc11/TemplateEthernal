@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, CreditCard, ShieldCheck, Info, Calendar as CalendarIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +23,12 @@ export default function Checkout() {
     const [step, setStep] = useState(1);
     const navigate = useNavigate();
     const { booking } = useBooking();
+
+    useEffect(() => {
+        if (!booking.checkIn || !booking.checkOut) {
+            navigate('/rooms', { replace: true });
+        }
+    }, [booking.checkIn, booking.checkOut, navigate]);
 
     const selectedRoom = useMemo(() => {
         return rooms.find(r => r.id === booking.roomTypeId) || rooms[0]; // Fallback to first room

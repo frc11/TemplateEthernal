@@ -6,7 +6,6 @@ import {
     ChevronRight,
     Check,
     Shield,
-    Maximize,
     ArrowRight,
     MapPin
 } from 'lucide-react';
@@ -21,6 +20,7 @@ export default function RoomDetail() {
     const [isBookingOpen, setIsBookingOpen] = useState(false);
 
     useEffect(() => {
+        window.scrollTo(0, 0); // Force scroll to top on mount/route change
         const foundRoom = rooms.find(r => r.id === Number(id));
         if (foundRoom) setRoom(foundRoom);
     }, [id]);
@@ -130,22 +130,6 @@ export default function RoomDetail() {
                                         </div>
                                     </div>
                                 ))}
-                            </div>
-                        </section>
-
-                        {/* Floor Plan Placeholder */}
-                        <section>
-                            <h2 className="text-[10px] uppercase tracking-[0.2em] text-charcoal/40 mb-12 font-medium">Spatial Architecture</h2>
-                            <div className="aspect-[16/9] w-full bg-sand/10 border border-sand/30 rounded-3xl flex items-center justify-center group overflow-hidden relative">
-                                <div className="absolute inset-0 opacity-5 pointer-events-none"
-                                    style={{ backgroundImage: 'radial-gradient(circle, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-                                <div className="text-center transition-transform duration-700 group-hover:scale-105">
-                                    <div className="w-20 h-20 rounded-full border border-charcoal/10 flex items-center justify-center mx-auto mb-6">
-                                        <Maximize size={24} className="text-charcoal/30" />
-                                    </div>
-                                    <p className="font-serif text-xl text-charcoal/40">Blueprint: {room.name}</p>
-                                    <p className="text-[10px] uppercase tracking-widest text-charcoal/30 mt-2">Interactive Schematic Coming Soon</p>
-                                </div>
                             </div>
                         </section>
 
