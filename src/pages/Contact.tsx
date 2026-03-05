@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, ChevronDown, MessageCircle, ExternalLink, Mail } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -9,7 +10,7 @@ import CustomMap from '../components/CustomMap';
 const inquirySchema = z.object({
     name: z.string().min(2, "Name is required"),
     email: z.string().email("Invalid email address"),
-    subject: z.enum(["General", "Wedding", "Event"]),
+    subject: z.enum(["General", "Wedding", "Event", "Dining"]),
     message: z.string().min(10, "Please share a bit more (min 10 chars)"),
 });
 
@@ -32,10 +33,26 @@ const faqs = [
 
 export default function Contact() {
     const [openFaq, setOpenFaq] = useState<number | null>(null);
+    const location = useLocation();
 
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<InquiryFormData>({
+    const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm<InquiryFormData>({
         resolver: zodResolver(inquirySchema),
     });
+
+    useEffect(() => {
+        if (location.state?.inquiryContext === 'Dining') {
+            setValue('subject', 'Dining');
+        }
+
+        if (location.hash) {
+            const element = document.getElementById(location.hash.substring(1));
+            if (element) {
+                setTimeout(() => {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }, [location.state, location.hash, setValue]);
 
     const onSubmit = (data: InquiryFormData) => {
         console.log("Inquiry transmitted:", data);
@@ -90,7 +107,7 @@ export default function Contact() {
                 </section>
 
                 {/* Inquiry Form Section */}
-                <section className="grid grid-cols-1 lg:grid-cols-12 gap-20 mb-40">
+                <section id="inquiry" className="grid grid-cols-1 lg:grid-cols-12 gap-20 mb-40">
                     <div className="lg:col-span-5">
                         <h2 className="font-serif text-6xl md:text-8xl leading-[0.9] mb-8">Inquiry.</h2>
                         <p className="text-lg font-light text-charcoal/60 leading-relaxed max-w-sm italic">
@@ -132,6 +149,7 @@ export default function Contact() {
                                         <option value="General">General Inquiry</option>
                                         <option value="Wedding">Wedding Rituals</option>
                                         <option value="Event">Corporate Retreats</option>
+                                        <option value="Dining">Private Dining</option>
                                     </select>
                                     <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 text-charcoal/40 pointer-events-none" size={20} />
                                 </div>

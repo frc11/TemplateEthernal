@@ -12,15 +12,11 @@ export default function DiningPage() {
             {/* Cinematic Hero Section */}
             <section className="relative h-screen flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 z-0">
-                    <video
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover brightness-50 contrast-125"
-                    >
-                        <source src="https://videos.pexels.com/video-files/4039151/4039151-hd_1920_1080_25fps.mp4" type="video/mp4" />
-                    </video>
+                    <img
+                        src="https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=1920&q=80"
+                        alt="Ethereal Dining Experience"
+                        className="w-full h-full object-cover brightness-50 contrast-125 transition-transform duration-[20s] ease-linear scale-110"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-b from-charcoal/40 via-transparent to-charcoal/60" />
                 </div>
 

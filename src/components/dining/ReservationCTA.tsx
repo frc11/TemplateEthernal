@@ -1,7 +1,12 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import TableReservationModal from './TableReservationModal';
 
 export default function ReservationCTA() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         <section className="py-32 px-6 bg-cream text-charcoal text-center overflow-hidden">
             <motion.div
@@ -21,15 +26,25 @@ export default function ReservationCTA() {
                 </p>
 
                 <div className="flex flex-col md:flex-row items-center justify-center gap-6 pt-8">
-                    <button className="group px-12 py-6 bg-charcoal text-cream rounded-full text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-black transition-all flex items-center gap-4">
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="group px-12 py-6 bg-charcoal text-cream rounded-full text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-black transition-all flex items-center gap-4"
+                    >
                         Reserve a Table
                         <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
                     </button>
-                    <button className="px-12 py-6 border border-charcoal/20 text-charcoal rounded-full text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-charcoal/5 transition-all">
-                        Private Dining
-                    </button>
+                    <Link to="/contact#inquiry" state={{ inquiryContext: 'Dining' }}>
+                        <button className="px-12 py-6 border border-charcoal/20 text-charcoal rounded-full text-[10px] uppercase tracking-[0.4em] font-bold hover:bg-charcoal/5 transition-all">
+                            Private Dining
+                        </button>
+                    </Link>
                 </div>
             </motion.div>
+
+            <TableReservationModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
         </section>
     );
 }

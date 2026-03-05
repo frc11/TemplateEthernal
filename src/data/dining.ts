@@ -21,7 +21,7 @@ export const diningData: DiningMenu = {
         { name: "Green Goddess Omelette", description: "Farm-fresh eggs, baby spinach, avocado, local herbs, and goat's cheese mousse.", price: "$28", tags: ["Vegetarian"], image: "https://images.pexels.com/photos/6294356/pexels-photo-6294356.jpeg?auto=compress&cs=tinysrgb&w=300" }
     ],
     lunch: [
-        { name: "Pacific Reef Carpaccio", description: "Thinly sliced wild snapper, finger lime, pickled sea grapes, and cold-pressed olive oil.", price: "$38", tags: ["Raw", "Sustainable"], image: "https://images.pexels.com/photos/17650165/pexels-photo-17650165/free-photo-of-close-up-of-traditional-japanese-dish.jpeg?auto=compress&cs=tinysrgb&w=300" },
+        { name: "Pacific Reef Carpaccio", description: "Thinly sliced wild snapper, finger lime, pickled sea grapes, and cold-pressed olive oil.", price: "$38", tags: ["Raw", "Sustainable"], image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=300&q=80" },
         { name: "Ancient Grain Salad", description: "Quinoa, amaranth, roasted root vegetables, pomegranate, and tahini-lemon dressing.", price: "$34", tags: ["Vegan"], image: "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=300" },
         { name: "Wood-Fired Octopus", description: "Charred lagoon octopus, smoked paprika, saffron emulsions, and crispy chickpeas.", price: "$42", image: "https://images.pexels.com/photos/2827263/pexels-photo-2827263.jpeg?auto=compress&cs=tinysrgb&w=300" }
     ],
@@ -32,13 +32,13 @@ export const diningData: DiningMenu = {
     ],
     wine: [
         { name: "Cloudy Bay Sauvignon", description: "Marlborough, NZ. Vibrant, aromatic, with notes of lime and grapefruit.", price: "$120", image: "https://images.pexels.com/photos/2912108/pexels-photo-2912108.jpeg?auto=compress&cs=tinysrgb&w=300" },
-        { name: "Opus One 2018", description: "Napa Valley, USA. Rich, complex, with velvety tannins and dark fruit.", price: "$450", image: "https://images.pexels.com/photos/2042220/pexels-photo-2042220.jpeg?auto=compress&cs=tinysrgb&w=300" },
+        { name: "Opus One 2018", description: "Napa Valley, USA. Rich, complex, with velvety tannins and dark fruit.", price: "$450", image: "https://images.unsplash.com/photo-1584916201218-f4242ceb4809?auto=format&fit=crop&w=300&q=80" },
         { name: "Dom Pérignon", description: "Champagne, FR. Precise, crystalline, with delicate floral notes.", price: "$380", image: "https://images.pexels.com/photos/317181/pexels-photo-317181.jpeg?auto=compress&cs=tinysrgb&w=300" }
     ]
 };
 
 export const menuItems: MenuItem[] = [
     { name: "Dusky Wagyu Fillet", description: "30-day aged wagyu...", ingredients: "30-day aged wagyu, charcoal-roasted marrow, wild mushrooms", price: "$85", image: "https://images.pexels.com/photos/3535383/pexels-photo-3535383.jpeg?auto=compress&cs=tinysrgb&w=800" },
-    { name: "Pacific Reef Carpaccio", description: "Sustainably sourced...", ingredients: "Wild snapper, finger lime, pickled sea grapes", price: "$38", image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=2070&auto=format&fit=crop" },
+    { name: "Pacific Reef Carpaccio", description: "Sustainably sourced...", ingredients: "Wild snapper, finger lime, pickled sea grapes", price: "$38", image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80" },
     { name: "Lake Retreat Soup", description: "Local watercress...", ingredients: "Watercress, organic cream, roasted seeds", price: "$26", image: "https://images.pexels.com/photos/5929/food-salad-dinner-eating.jpg?auto=compress&cs=tinysrgb&w=800" }
 ];
