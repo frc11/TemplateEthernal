@@ -36,7 +36,7 @@ export default function BookingWidget({ isStatic = false }: BookingWidgetProps) 
     };
 
     const handleCtaClick = () => {
-        if (booking.roomTypeId) {
+        if (isStatic || booking.roomTypeId) {
             navigate('/checkout');
         } else {
             setIsSearching(true);
