@@ -47,3 +47,81 @@
     pointer-events: none;
   }
 }
+
+/* 
+  Ethereal React DatePicker Overrides 
+  To replace the default blue/generic theme with Charcoal & Sand 
+*/
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker {
+  @apply font-serif border-none shadow-2xl rounded-2xl bg-white text-charcoal !important;
+}
+
+.react-datepicker__header {
+  @apply bg-stone-50 border-b border-charcoal/10 rounded-t-2xl pt-4 !important;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  @apply text-charcoal font-serif font-medium text-lg !important;
+}
+
+.react-datepicker__day-name {
+  @apply text-charcoal/40 text-[10px] uppercase tracking-widest font-bold !important;
+}
+
+.react-datepicker__day {
+  @apply hover:bg-stone-100 text-charcoal rounded-full transition-colors !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--in-selecting-range,
+.react-datepicker__year-text--in-range {
+  @apply bg-charcoal text-white rounded-full hover:bg-black !important;
+}
+
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--keyboard-selected {
+  @apply bg-charcoal/20 text-charcoal rounded-full !important;
+}
+
+.react-datepicker-time__header {
+  @apply hidden !important;
+  /* Hide redundant time header */
+}
+
+/* Time Picker Specific Overrides */
+.react-datepicker__time-container {
+  @apply border-l border-charcoal/10 rounded-r-2xl !important;
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item {
+  @apply hover:bg-stone-100 text-sm transition-colors !important;
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected {
+  @apply bg-charcoal text-white font-serif hover:bg-black !important;
+}
+
+.react-datepicker__navigation-icon::before {
+  @apply border-charcoal/40 border-[2px] h-[8px] w-[8px] !important;
+}
+
+.react-datepicker__navigation:hover *::before {
+  @apply border-charcoal transition-colors !important;
+}

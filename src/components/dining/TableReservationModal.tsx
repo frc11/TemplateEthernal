@@ -22,18 +22,22 @@ const TABLES = [
 export default function TableReservationModal({ isOpen, onClose }: TableReservationModalProps) {
     const [selectedTable, setSelectedTable] = useState<number | null>(null);
     const [date, setDate] = useState<Date | null>(null);
+    const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const timeSlots = ["20:00", "20:30", "21:00", "21:30", "22:00"];
 
     if (!isOpen) return null;
 
     const handleConfirm = (e: React.FormEvent) => {
         e.preventDefault();
-        if (selectedTable && date) {
+        if (selectedTable && date && selectedTime) {
             setIsSubmitted(true);
             setTimeout(() => {
                 setIsSubmitted(false);
                 setSelectedTable(null);
                 setDate(null);
+                setSelectedTime(null);
                 onClose();
             }, 3000);
         }
@@ -206,7 +210,7 @@ export default function TableReservationModal({ isOpen, onClose }: TableReservat
                                 <form onSubmit={handleConfirm} className="space-y-8 flex-1">
 
                                     {/* Date Selection */}
-                                    <div className="space-y-2">
+                                    <div className="space-y-4">
                                         <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-charcoal/60 flex items-center gap-2">
                                             <Calendar size={12} /> Date & Time
                                         </label>
@@ -214,15 +218,29 @@ export default function TableReservationModal({ isOpen, onClose }: TableReservat
                                             <DatePicker
                                                 selected={date}
                                                 onChange={(d: Date | null) => setDate(d)}
-                                                showTimeSelect
-                                                timeFormat="HH:mm"
-                                                timeIntervals={30}
-                                                timeCaption="time"
-                                                dateFormat="MMMM d, yyyy h:mm aa"
+                                                dateFormat="MMMM d, yyyy"
+                                                minDate={new Date()}
                                                 placeholderText="Select your preference..."
                                                 className="w-full bg-transparent outline-none font-serif text-xl text-charcoal placeholder:text-charcoal/30 cursor-pointer"
                                                 required
                                             />
+                                        </div>
+
+                                        {/* Custom Time Selection Buttons */}
+                                        <div className="animate-fade-in flex flex-wrap gap-2 pt-2">
+                                            {timeSlots.map((time) => (
+                                                <button
+                                                    key={time}
+                                                    type="button"
+                                                    onClick={() => setSelectedTime(time)}
+                                                    className={`px-4 py-2 rounded-full text-xs font-serif transition-colors ${selectedTime === time
+                                                            ? 'bg-charcoal text-white shadow-md'
+                                                            : 'bg-stone-200/50 text-charcoal/60 hover:bg-stone-200 hover:text-charcoal'
+                                                        }`}
+                                                >
+                                                    {time}
+                                                </button>
+                                            ))}
                                         </div>
                                     </div>
 
@@ -268,10 +286,10 @@ export default function TableReservationModal({ isOpen, onClose }: TableReservat
                                     <div className="pt-8">
                                         <button
                                             type="submit"
-                                            disabled={!selectedTable || !date}
+                                            disabled={!selectedTable || !date || !selectedTime}
                                             className="w-full bg-charcoal text-cream py-6 rounded-full text-xs uppercase tracking-[0.2em] font-bold hover:bg-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-charcoal/20"
                                         >
-                                            {!selectedTable ? 'Please Select a Table First' : 'Confirm Reservation'}
+                                            {!selectedTable ? 'Select a Table' : !date ? 'Select Date' : !selectedTime ? 'Select Time' : 'Confirm Reservation'}
                                         </button>
                                         <p className="text-center mt-4 text-[10px] uppercase tracking-widest text-charcoal/40">
                                             Table {selectedTable ? selectedTable : '-'} • Modifiable up to 24h prior
