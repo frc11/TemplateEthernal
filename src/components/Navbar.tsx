@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowRight } from 'lucide-react';
+import BookingSelectionModal from './BookingSelectionModal';
 
 const navItems = [
     { name: 'Stay', path: '/rooms', image: 'https://images.pexels.com/photos/189333/pexels-photo-189333.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
@@ -16,6 +17,7 @@ export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+    const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
     const location = useLocation();
 
     // Advanced Scroll Sensitivity Logic
@@ -95,7 +97,6 @@ export default function Navbar() {
                                     ETHEREAL
                                 </span>
                             </Link>
-
                             {/* Right Section */}
                             <div className="flex items-center gap-4 md:gap-8">
                                 <Link
@@ -105,11 +106,12 @@ export default function Navbar() {
                                     Contact
                                 </Link>
 
-                                <Link to="/checkout">
-                                    <button className={`px-4 md:px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl ${isScrolled ? 'bg-white text-charcoal shadow-black/10' : 'bg-charcoal text-white shadow-charcoal/10'}`}>
-                                        Book Now
-                                    </button>
-                                </Link>
+                                <button
+                                    onClick={() => setIsBookingModalOpen(true)}
+                                    className={`px-4 md:px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl ${isScrolled ? 'bg-white text-charcoal shadow-black/10' : 'bg-charcoal text-white shadow-charcoal/10'}`}
+                                >
+                                    Book Now
+                                </button>
                             </div>
 
                         </div>
@@ -119,88 +121,101 @@ export default function Navbar() {
 
             {/* Cinematic Mobile Overlay */}
             <AnimatePresence>
-                {isMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="fixed inset-0 z-[60] bg-stone-950 flex flex-col md:flex-row"
-                    >
-                        {/* Static Overlay Background with Reveal logic */}
-                        <div className="absolute inset-0 z-0 hidden md:block opacity-30">
-                            <AnimatePresence mode="wait">
-                                {hoveredItem && (
-                                    <motion.img
-                                        key={hoveredItem}
-                                        src={navItems.find(n => n.name === hoveredItem)?.image}
-                                        initial={{ opacity: 0, scale: 1.1 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 0.95 }}
-                                        transition={{ duration: 0.8 }}
-                                        className="w-full h-full object-cover"
-                                    />
-                                )}
-                            </AnimatePresence>
-                            <div className="absolute inset-0 bg-stone-950/40" />
-                        </div>
-
-                        {/* Top Bar for Close */}
-                        <div className="relative z-10 w-full p-8 flex justify-between items-center text-white">
-                            <span className="font-serif text-xl tracking-widest">ETHEREAL</span>
-                            <button
-                                onClick={() => setIsMenuOpen(false)}
-                                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors"
-                            >
-                                <X size={24} strokeWidth={1} />
-                            </button>
-                        </div>
-
-                        {/* Navigation Links */}
-                        <div className="relative z-10 flex-1 flex flex-col justify-center px-10 md:px-32 space-y-6 md:space-y-10">
-                            {navItems.map((item, i) => (
-                                <motion.div
-                                    key={item.name}
-                                    initial={{ x: -50, opacity: 0 }}
-                                    animate={{ x: 0, opacity: 1 }}
-                                    transition={{ delay: 0.2 + i * 0.1, duration: 0.6 }}
-                                >
-                                    <Link
-                                        to={item.path}
-                                        onMouseEnter={() => setHoveredItem(item.name)}
-                                        onMouseLeave={() => setHoveredItem(null)}
-                                        className="group flex items-center gap-6"
-                                    >
-                                        <span className="text-white/20 font-serif text-2xl md:text-3xl group-hover:text-white/40 transition-colors">
-                                            0{i + 1}
-                                        </span>
-                                        <h2 className="font-serif text-5xl md:text-8xl text-white group-hover:italic group-hover:translate-x-4 transition-all duration-500">
-                                            {item.name}
-                                        </h2>
-                                    </Link>
-                                </motion.div>
-                            ))}
-                        </div>
-
-                        {/* Bottom Info / CTA */}
-                        <div className="relative z-10 p-10 md:p-32 flex flex-col justify-end space-y-8">
-                            <div className="space-y-4">
-                                <p className="text-xs uppercase tracking-[0.3em] text-white/40">Discover more</p>
-                                <div className="space-y-2 text-white/60 font-light">
-                                    <p>Calle de los Sueños, 11</p>
-                                    <p>Baja California, Mexico</p>
-                                </div>
+                {
+                    isMenuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.6 }}
+                            className="fixed inset-0 z-[60] bg-stone-950 flex flex-col md:flex-row"
+                        >
+                            {/* Static Overlay Background with Reveal logic */}
+                            <div className="absolute inset-0 z-0 hidden md:block opacity-30">
+                                <AnimatePresence mode="wait">
+                                    {hoveredItem && (
+                                        <motion.img
+                                            key={hoveredItem}
+                                            src={navItems.find(n => n.name === hoveredItem)?.image}
+                                            initial={{ opacity: 0, scale: 1.1 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.95 }}
+                                            transition={{ duration: 0.8 }}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    )}
+                                </AnimatePresence>
+                                <div className="absolute inset-0 bg-stone-950/40" />
                             </div>
-                            <Link to="/checkout" className="inline-flex items-center gap-4 text-white group">
-                                <span className="text-xs uppercase tracking-[0.3em]">Direct Reservation</span>
-                                <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-charcoal transition-all">
-                                    <ArrowRight size={16} />
+
+                            {/* Top Bar for Close */}
+                            <div className="relative z-10 w-full p-8 flex justify-between items-center text-white">
+                                <span className="font-serif text-xl tracking-widest">ETHEREAL</span>
+                                <button
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors"
+                                >
+                                    <X size={24} strokeWidth={1} />
+                                </button>
+                            </div>
+
+                            {/* Navigation Links */}
+                            <div className="relative z-10 flex-1 flex flex-col justify-center px-10 md:px-32 space-y-6 md:space-y-10">
+                                {navItems.map((item, i) => (
+                                    <motion.div
+                                        key={item.name}
+                                        initial={{ x: -50, opacity: 0 }}
+                                        animate={{ x: 0, opacity: 1 }}
+                                        transition={{ delay: 0.2 + i * 0.1, duration: 0.6 }}
+                                    >
+                                        <Link
+                                            to={item.path}
+                                            onMouseEnter={() => setHoveredItem(item.name)}
+                                            onMouseLeave={() => setHoveredItem(null)}
+                                            className="group flex items-center gap-6"
+                                        >
+                                            <span className="text-white/20 font-serif text-2xl md:text-3xl group-hover:text-white/40 transition-colors">
+                                                0{i + 1}
+                                            </span>
+                                            <h2 className="font-serif text-5xl md:text-8xl text-white group-hover:italic group-hover:translate-x-4 transition-all duration-500">
+                                                {item.name}
+                                            </h2>
+                                        </Link>
+                                    </motion.div>
+                                ))}
+                            </div>
+
+                            {/* Bottom Info / CTA */}
+                            <div className="relative z-10 p-10 md:p-32 flex flex-col justify-end space-y-8">
+                                <div className="space-y-4">
+                                    <p className="text-xs uppercase tracking-[0.3em] text-white/40">Discover more</p>
+                                    <div className="space-y-2 text-white/60 font-light">
+                                        <p>Calle de los Sueños, 11</p>
+                                        <p>Baja California, Mexico</p>
+                                    </div>
                                 </div>
-                            </Link>
-                        </div>
-                    </motion.div>
-                )}
+                                <button
+                                    onClick={() => {
+                                        setIsMenuOpen(false);
+                                        setTimeout(() => setIsBookingModalOpen(true), 300);
+                                    }}
+                                    className="inline-flex items-center gap-4 text-white group"
+                                >
+                                    <span className="text-xs uppercase tracking-[0.3em]">Direct Reservation</span>
+                                    <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-charcoal transition-all">
+                                        <ArrowRight size={16} />
+                                    </div>
+                                </button>
+                            </div>
+                        </motion.div>
+                    )}
             </AnimatePresence>
+
+            {/* Global Booking Selection Modal */}
+            <BookingSelectionModal
+                isOpen={isBookingModalOpen}
+                onClose={() => setIsBookingModalOpen(false)}
+            />
         </>
     );
 }

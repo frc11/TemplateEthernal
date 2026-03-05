@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, ChevronDown, MessageCircle, ExternalLink, Mail } from 'lucide-react';
+import { Send, ChevronDown, MessageCircle, ExternalLink, Mail, Check } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,13 +31,23 @@ const faqs = [
     }
 ];
 
+const subjects: { value: InquiryFormData["subject"], label: string }[] = [
+    { value: "General", label: "General Inquiry" },
+    { value: "Wedding", label: "Wedding Rituals" },
+    { value: "Event", label: "Corporate Retreats" },
+    { value: "Dining", label: "Private Dining" }
+];
+
 export default function Contact() {
     const [openFaq, setOpenFaq] = useState<number | null>(null);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const location = useLocation();
 
-    const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm<InquiryFormData>({
+    const { register, handleSubmit, setValue, watch, formState: { errors, isSubmitting } } = useForm<InquiryFormData>({
         resolver: zodResolver(inquirySchema),
     });
+
+    const currentSubject = watch("subject");
 
     useEffect(() => {
         if (location.state?.inquiryContext === 'Dining') {
@@ -61,12 +71,21 @@ export default function Contact() {
 
     return (
         <div className="bg-cream min-h-screen text-charcoal">
-            {/* Top Map Section - 50% Height */}
-            <section className="h-[50vh] w-full pt-20">
+            {/* Hero Header */}
+            <section className="pt-48 pb-20 px-6 text-center max-w-4xl mx-auto">
+                <span className="text-[10px] uppercase tracking-[0.4em] text-charcoal/40 font-bold mb-4 block">Ethereal Concierge</span>
+                <h1 className="font-serif text-6xl md:text-8xl text-charcoal mb-6 leading-none">Talk with us.</h1>
+                <p className="text-xl text-charcoal/60 font-light italic">
+                    Our guardians are at your disposal to curate your perfect escape.
+                </p>
+            </section>
+
+            {/* Contained Map Section */}
+            <section className="relative z-10 mb-20 w-full max-w-[95vw] lg:max-w-[1400px] mx-auto h-[60vh]">
                 <CustomMap height="100%" />
             </section>
 
-            <main className="max-w-7xl mx-auto px-6 py-24">
+            <main className="max-w-7xl mx-auto px-6 py-12">
                 {/* Editorial Info Grid */}
                 <section className="grid grid-cols-1 lg:grid-cols-3 gap-20 mb-32 border-b border-sand pb-32">
                     <div className="space-y-8">
@@ -140,18 +159,47 @@ export default function Contact() {
                                     {errors.email && <span className="absolute -bottom-6 left-0 text-[10px] uppercase text-rose-500 tracking-widest">{errors.email.message}</span>}
                                 </div>
 
-                                {/* Subject Select */}
+                                {/* Custom Subject Select */}
                                 <div className="relative group md:col-span-2">
-                                    <select
-                                        {...register("subject")}
-                                        className="w-full bg-transparent border-b border-charcoal/20 py-4 outline-none focus:border-charcoal transition-colors font-serif text-xl appearance-none cursor-pointer"
+                                    <input type="hidden" {...register("subject")} />
+
+                                    <div
+                                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                        className="w-full bg-transparent border-b border-charcoal/20 py-4 flex items-center justify-between cursor-pointer transition-colors hover:border-charcoal group-open:border-charcoal"
                                     >
-                                        <option value="General">General Inquiry</option>
-                                        <option value="Wedding">Wedding Rituals</option>
-                                        <option value="Event">Corporate Retreats</option>
-                                        <option value="Dining">Private Dining</option>
-                                    </select>
-                                    <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 text-charcoal/40 pointer-events-none" size={20} />
+                                        <span className={`font-serif text-xl ${currentSubject ? 'text-charcoal' : 'text-charcoal/20'}`}>
+                                            {subjects.find(s => s.value === currentSubject)?.label || "Select Subject"}
+                                        </span>
+                                        <ChevronDown
+                                            size={20}
+                                            className={`text-charcoal/40 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                                        />
+                                    </div>
+
+                                    <AnimatePresence>
+                                        {isDropdownOpen && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: 10 }}
+                                                className="absolute top-full left-0 w-full mt-2 bg-white/95 backdrop-blur-xl border border-charcoal/10 rounded-2xl shadow-2xl overflow-hidden z-50 py-2"
+                                            >
+                                                {subjects.map((s) => (
+                                                    <div
+                                                        key={s.value}
+                                                        onClick={() => {
+                                                            setValue("subject", s.value);
+                                                            setIsDropdownOpen(false);
+                                                        }}
+                                                        className={`px-6 py-4 cursor-pointer flex items-center justify-between transition-colors hover:bg-charcoal/5 ${currentSubject === s.value ? 'bg-charcoal/5 font-medium' : ''}`}
+                                                    >
+                                                        <span className="font-serif text-lg text-charcoal">{s.label}</span>
+                                                        {currentSubject === s.value && <Check size={16} className="text-charcoal" />}
+                                                    </div>
+                                                ))}
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
                                 </div>
 
                                 {/* Message */}

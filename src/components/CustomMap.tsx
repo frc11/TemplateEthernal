@@ -79,7 +79,7 @@ export default function CustomMap({ height = "80vh" }: CustomMapProps) {
 
     return (
         <section
-            className="relative w-full bg-[#E3E0D6] flex items-center justify-center p-4 md:p-12"
+            className="relative w-full flex items-center justify-center p-4 md:p-12"
             style={{ height }}
         >
             {/* Map Container - The Paper/Canvas */}
