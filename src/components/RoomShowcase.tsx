@@ -304,7 +304,7 @@ export default function RoomShowcase() {
                             className="w-full max-w-4xl"
                             onClick={e => e.stopPropagation()}
                         >
-                            <div className="bg-cream rounded-[3rem] p-12 relative shadow-2xl overflow-hidden min-h-[500px] flex flex-col justify-center">
+                            <div className="bg-cream rounded-[3rem] p-12 relative shadow-2xl min-h-[500px] flex flex-col justify-center">
                                 {/* Decorative elements */}
                                 <div className="absolute top-0 right-0 w-64 h-64 bg-sand/10 rounded-full -mr-32 -mt-32 blur-3xl opacity-50" />
 
