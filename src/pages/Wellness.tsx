@@ -136,7 +136,7 @@ export default function Wellness() {
                         initial={{ opacity: 0, x: 30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="bg-white p-10 md:p-16 rounded-[3rem] shadow-2xl relative z-10 border border-charcoal/5"
+                        className="bg-white p-4 md:p-10 lg:p-16 rounded-[2rem] md:rounded-[3rem] shadow-2xl relative z-10 border border-charcoal/5"
                     >
                         <div className="flex items-center gap-4 mb-12">
                             <div className="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center">
@@ -146,8 +146,8 @@ export default function Wellness() {
                         </div>
 
                         <form className="space-y-6" onSubmit={handleRequest}>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="space-y-2 relative z-50">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-50">
+                                <div className="space-y-2 relative">
                                     <label className="text-[10px] uppercase tracking-widest text-charcoal/40">Ideal Ritual</label>
                                     <div className="relative">
                                         <button
@@ -196,7 +196,7 @@ export default function Wellness() {
                                         </AnimatePresence>
                                     </div>
                                 </div>
-                                <div className="space-y-2 flex flex-col justify-center relative z-40">
+                                <div className="space-y-2 flex flex-col justify-center relative">
                                     <label className="text-[10px] uppercase tracking-widest text-charcoal/40">Preferred Date</label>
                                     <div className="w-full bg-white/60 backdrop-blur-md border border-charcoal/10 rounded-2xl px-6 py-4 transition-colors cursor-pointer hover:border-charcoal/30 flex items-center">
                                         <DatePicker
@@ -209,7 +209,7 @@ export default function Wellness() {
                                             }
                                             minDate={new Date()}
                                             placeholderText="Select Date"
-                                            popperPlacement="top-start"
+                                            popperPlacement="bottom-start"
                                         />
                                     </div>
                                 </div>

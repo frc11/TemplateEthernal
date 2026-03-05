@@ -49,19 +49,19 @@ export default function TableReservationModal({ isOpen, onClose }: TableReservat
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-charcoal/80 backdrop-blur-md flex items-center justify-center p-6 lg:p-12 overflow-y-auto"
+                className="fixed inset-0 z-[100] bg-charcoal/80 backdrop-blur-md flex items-center justify-center p-4 md:p-6 lg:p-12 overflow-y-auto"
                 onClick={onClose}
             >
                 <motion.div
                     initial={{ scale: 0.95, y: 20 }}
                     animate={{ scale: 1, y: 0 }}
                     exit={{ scale: 0.95, y: 20 }}
-                    className="w-full max-w-6xl bg-stone-50 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row relative min-h-[600px]"
+                    className="w-full max-w-6xl bg-stone-50 rounded-[2rem] md:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row relative min-h-[600px]"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <button
                         onClick={onClose}
-                        className="absolute top-6 right-6 lg:top-8 lg:right-8 w-12 h-12 rounded-full bg-white border border-charcoal/10 flex items-center justify-center text-charcoal/40 hover:text-charcoal transition-all z-50 hover:bg-stone-100"
+                        className="fixed md:absolute top-4 right-4 lg:top-8 lg:right-8 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white border border-charcoal/10 flex items-center justify-center text-charcoal/60 hover:text-charcoal transition-all z-[110] hover:bg-stone-100 shadow-md md:shadow-none"
                     >
                         <X size={20} />
                     </button>
@@ -84,7 +84,7 @@ export default function TableReservationModal({ isOpen, onClose }: TableReservat
                     ) : (
                         <>
                             {/* Left Side: Interactive Map */}
-                            <div className="w-full lg:w-1/2 bg-white relative p-8 lg:p-16 border-b lg:border-b-0 lg:border-r border-charcoal/10 flex flex-col">
+                            <div className="w-full lg:w-1/2 bg-white relative p-6 md:p-8 lg:p-16 border-b lg:border-b-0 lg:border-r border-charcoal/10 flex flex-col pt-16 md:pt-8">
                                 <div className="mb-10 text-center lg:text-left">
                                     <h3 className="text-[10px] uppercase tracking-[0.3em] font-bold text-charcoal/40 mb-2">Spatial Layout</h3>
                                     <p className="font-serif text-3xl text-charcoal">Select Your Table</p>
@@ -201,7 +201,7 @@ export default function TableReservationModal({ isOpen, onClose }: TableReservat
                             </div>
 
                             {/* Right Side: Reservation Details Form */}
-                            <div className="w-full lg:w-1/2 p-8 lg:p-16 flex flex-col justify-center bg-stone-50">
+                            <div className="w-full lg:w-1/2 p-6 md:p-8 lg:p-16 flex flex-col justify-center bg-stone-50">
                                 <div className="mb-10 text-center lg:text-left">
                                     <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-charcoal/40 mb-2 block">The Details</span>
                                     <h2 className="font-serif text-4xl text-charcoal">Complete Request</h2>
@@ -234,8 +234,8 @@ export default function TableReservationModal({ isOpen, onClose }: TableReservat
                                                     type="button"
                                                     onClick={() => setSelectedTime(time)}
                                                     className={`px-4 py-2 rounded-full text-xs font-serif transition-colors ${selectedTime === time
-                                                            ? 'bg-charcoal text-white shadow-md'
-                                                            : 'bg-stone-200/50 text-charcoal/60 hover:bg-stone-200 hover:text-charcoal'
+                                                        ? 'bg-charcoal text-white shadow-md'
+                                                        : 'bg-stone-200/50 text-charcoal/60 hover:bg-stone-200 hover:text-charcoal'
                                                         }`}
                                                 >
                                                     {time}

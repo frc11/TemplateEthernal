@@ -203,7 +203,7 @@ export default function RoomDetail() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] bg-charcoal/60 backdrop-blur-xl flex items-center justify-center p-6"
+                        className="fixed inset-0 z-[100] bg-charcoal/60 backdrop-blur-xl flex items-center justify-center p-4 md:p-6"
                         onClick={() => setIsBookingOpen(false)}
                     >
                         <motion.div
@@ -213,28 +213,28 @@ export default function RoomDetail() {
                             className="w-full max-w-4xl"
                             onClick={e => e.stopPropagation()}
                         >
-                            <div className="bg-cream rounded-[3rem] p-12 relative shadow-2xl min-h-[500px] flex flex-col justify-center">
+                            <div className="bg-cream rounded-[2rem] md:rounded-[3rem] p-6 pt-16 md:p-12 relative shadow-2xl min-h-[500px] flex flex-col justify-center">
                                 {/* Decorative elements */}
                                 <div className="absolute top-0 right-0 w-64 h-64 bg-sand/10 rounded-full -mr-32 -mt-32 blur-3xl opacity-50" />
 
-                                <div className="relative z-10 text-center mb-16 px-10">
-                                    <span className="text-xs uppercase tracking-[0.3em] text-charcoal/40 mb-4 block">Reservation Request</span>
-                                    <h2 className="font-serif text-5xl text-charcoal">Secure Your Sanctuary.</h2>
-                                    <p className="text-charcoal/60 mt-4 max-w-lg mx-auto font-light">
+                                <div className="relative z-10 text-center mb-10 md:mb-16 px-2 md:px-10">
+                                    <span className="text-[10px] md:text-xs uppercase tracking-[0.3em] text-charcoal/40 mb-4 block">Reservation Request</span>
+                                    <h2 className="font-serif text-3xl md:text-5xl text-charcoal">Secure Your Sanctuary.</h2>
+                                    <p className="text-charcoal/60 mt-4 max-w-lg mx-auto font-light text-sm md:text-base">
                                         You are booking <span className="text-charcoal font-medium">{room.name}</span> for <span className="text-charcoal font-medium">{room.price}</span> per night.
                                     </p>
                                 </div>
 
-                                <div className="relative z-20 flex justify-center">
+                                <div className="relative z-20 flex justify-center w-full">
                                     {/* Using a modified static version of the widget for the modal */}
-                                    <div className="scale-110">
+                                    <div className="scale-100 md:scale-110 w-full px-2 md:px-0">
                                         <BookingWidget isStatic />
                                     </div>
                                 </div>
 
                                 <button
                                     onClick={() => setIsBookingOpen(false)}
-                                    className="absolute top-10 right-10 w-12 h-12 rounded-full border border-charcoal/10 flex items-center justify-center text-charcoal/40 hover:text-charcoal hover:border-charcoal/20 transition-all active:scale-90"
+                                    className="absolute top-4 right-4 md:top-10 md:right-10 z-[60] w-10 h-10 md:w-12 md:h-12 rounded-full border border-charcoal/10 flex items-center justify-center text-charcoal/80 hover:text-charcoal hover:border-charcoal/20 transition-all active:scale-90 bg-cream md:bg-transparent"
                                 >
                                     <span className="text-2xl font-light">×</span>
                                 </button>

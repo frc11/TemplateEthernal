@@ -142,19 +142,16 @@ export default function BookingWidget({ isStatic = false }: BookingWidgetProps) 
                 </div>
 
                 {/* CTA */}
-                <div className="p-1">
+                <div className="p-1 flex justify-center md:block">
                     <button
                         onClick={handleCtaClick}
                         disabled={isSearching}
-                        className="bg-charcoal text-cream h-14 w-full md:w-14 md:rounded-full rounded-2xl flex items-center justify-center gap-3 md:gap-0 hover:bg-black transition-all group disabled:opacity-80 disabled:cursor-not-allowed"
+                        className="bg-charcoal text-cream h-14 w-14 rounded-full flex items-center justify-center hover:bg-black transition-all group disabled:opacity-80 disabled:cursor-not-allowed"
                     >
                         {isSearching ? (
                             <div className="w-5 h-5 rounded-full border-2 border-white/30 border-t-white animate-spin"></div>
                         ) : (
-                            <>
-                                <span className="md:hidden text-xs uppercase tracking-widest font-bold">Discover Availability</span>
-                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </>
+                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         )}
                     </button>
                 </div>

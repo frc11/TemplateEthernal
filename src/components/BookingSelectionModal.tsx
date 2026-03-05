@@ -49,12 +49,12 @@ export default function BookingSelectionModal({ isOpen, onClose }: BookingSelect
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
-                className="fixed inset-0 z-[110] bg-stone-950/90 backdrop-blur-xl flex flex-col pt-32 px-6 lg:px-20 pb-20"
+                className="fixed inset-0 z-[110] bg-stone-950/90 backdrop-blur-xl flex flex-col pt-24 md:pt-32 px-6 lg:px-20 pb-20 overflow-y-auto"
                 onClick={onClose}
             >
                 <button
                     onClick={onClose}
-                    className="absolute top-10 right-10 w-14 h-14 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-colors z-50"
+                    className="fixed top-6 right-6 lg:top-10 lg:right-10 w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-colors z-[120]"
                 >
                     <X size={24} strokeWidth={1} />
                 </button>
@@ -69,7 +69,7 @@ export default function BookingSelectionModal({ isOpen, onClose }: BookingSelect
                     <h2 className="font-serif text-5xl md:text-7xl text-white">What service do you desire?</h2>
                 </motion.div>
 
-                <div className="flex-1 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-10 h-full min-h-0" onClick={(e) => e.stopPropagation()}>
+                <div className="flex-1 w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10 md:h-full md:min-h-0" onClick={(e) => e.stopPropagation()}>
                     {services.map((service, idx) => (
                         <motion.div
                             key={service.id}
