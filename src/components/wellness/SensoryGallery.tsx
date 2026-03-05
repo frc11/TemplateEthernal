@@ -13,9 +13,9 @@ export default function SensoryGallery() {
     const ySide = useTransform(scrollYProgress, [0, 1], [0, 150]);
 
     const images = [
-        "https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg?auto=compress&cs=tinysrgb&w=800", // Stones
-        "https://images.pexels.com/photos/6621228/pexels-photo-6621228.jpeg?auto=compress&cs=tinysrgb&w=800", // Oil
-        "https://images.pexels.com/photos/161737/massage-therapy-towels-relax-161737.jpeg?auto=compress&cs=tinysrgb&w=800"  // Towels
+        "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80", // Massage Therapy
+        "https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=800&q=80", // Spa Products / Towels
+        "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80"  // Zen / Stones
     ];
 
     return (
@@ -28,6 +28,7 @@ export default function SensoryGallery() {
                         src={images[0]}
                         alt="Heated Stones Ritual"
                         className="w-full h-full object-cover scale-110"
+                        containerClassName="w-full h-full"
                     />
                 </motion.div>
 
@@ -37,6 +38,7 @@ export default function SensoryGallery() {
                         src={images[1]}
                         alt="Essential Oils Extraction"
                         className="w-full h-full object-cover scale-110"
+                        containerClassName="w-full h-full"
                     />
                 </motion.div>
 
@@ -46,6 +48,7 @@ export default function SensoryGallery() {
                         src={images[2]}
                         alt="Linen & Purity"
                         className="w-full h-full object-cover scale-110"
+                        containerClassName="w-full h-full"
                     />
                 </motion.div>
 

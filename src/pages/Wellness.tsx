@@ -1,12 +1,40 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { treatments } from '../data/wellness';
-import { Droplets, Wind, Send, Calendar } from 'lucide-react';
+import { Droplets, Wind, Send, Calendar, ChevronDown, Sparkles, Sprout } from 'lucide-react';
 import SensorialBackground from '../components/wellness/SensorialBackground';
 import TreatmentAccordion from '../components/wellness/TreatmentAccordion';
 import SensoryGallery from '../components/wellness/SensoryGallery';
 import NoiseOverlay from '../components/NoiseOverlay';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import '../styles/datepicker.css';
 
 export default function Wellness() {
+    const navigate = useNavigate();
+    const [selectedTreatment, setSelectedTreatment] = useState("");
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const formatDate = (date: Date | null) => {
+        if (!date) return "Select Date";
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    };
+
+    const handleRequest = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (selectedTreatment && selectedTreatment !== "Select a Treatment") {
+            navigate('/wellness-checkout', {
+                state: {
+                    treatments: [selectedTreatment],
+                    preferredDate: selectedDate ? selectedDate.toISOString() : null
+                }
+            });
+        } else {
+            alert('Please select a ritual to continue.');
+        }
+    };
     return (
         <div className="bg-stone-50 min-h-screen relative">
             <NoiseOverlay />
@@ -60,7 +88,7 @@ export default function Wellness() {
             <SensoryGallery />
 
             {/* Appointment Section */}
-            <section id="schedule" className="relative py-32 overflow-hidden">
+            <section id="schedule" className="relative py-32">
                 <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
 
                     <motion.div
@@ -117,28 +145,83 @@ export default function Wellness() {
                             <h3 className="font-serif text-2xl text-charcoal">Schedule Treatment</h3>
                         </div>
 
-                        <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-                            <div className="space-y-2">
-                                <label className="text-[10px] uppercase tracking-widest text-charcoal/40">Full Name</label>
-                                <input type="text" className="w-full bg-transparent border-b border-charcoal/10 py-2 outline-none focus:border-charcoal transition-colors" placeholder="Alex Rivers" />
-                            </div>
-
+                        <form className="space-y-6" onSubmit={handleRequest}>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="space-y-2">
+                                <div className="space-y-2 relative z-50">
                                     <label className="text-[10px] uppercase tracking-widest text-charcoal/40">Ideal Ritual</label>
-                                    <select className="w-full bg-transparent border-b border-charcoal/10 py-2 outline-none focus:border-charcoal transition-colors appearance-none cursor-pointer">
-                                        <option>Select a Treatment</option>
-                                        {treatments.map(t => <option key={t.name}>{t.name}</option>)}
-                                    </select>
+                                    <div className="relative">
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                            className="w-full bg-white/60 backdrop-blur-md border border-charcoal/10 rounded-2xl px-6 py-4 outline-none focus:border-charcoal/30 transition-colors cursor-pointer flex justify-between items-center whitespace-nowrap"
+                                        >
+                                            <span className={selectedTreatment ? "text-charcoal" : "text-charcoal/40"}>
+                                                {selectedTreatment || "Select a Treatment"}
+                                            </span>
+                                            <ChevronDown size={16} className={`text-charcoal/40 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                                        </button>
+
+                                        <AnimatePresence>
+                                            {isDropdownOpen && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    exit={{ opacity: 0, y: 10 }}
+                                                    className="absolute top-full left-0 mt-4 bg-white/95 backdrop-blur-2xl border border-charcoal/10 rounded-3xl shadow-2xl z-50 p-2 max-h-64 overflow-y-auto custom-scrollbar w-[120%] md:w-max min-w-full"
+                                                >
+                                                    {treatments.map((t) => {
+                                                        const Icon = t.category === 'Massages' ? Sprout : t.category === 'Facials' ? Sparkles : Wind;
+                                                        return (
+                                                            <button
+                                                                type="button"
+                                                                key={t.name}
+                                                                onClick={() => {
+                                                                    setSelectedTreatment(t.name);
+                                                                    setIsDropdownOpen(false);
+                                                                }}
+                                                                className="w-full text-left px-4 py-3 hover:bg-charcoal/5 rounded-2xl transition-colors flex items-center justify-between group"
+                                                            >
+                                                                <div className="flex items-center gap-3 pr-4">
+                                                                    <div className="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-charcoal/50 group-hover:text-charcoal group-hover:bg-white transition-colors shrink-0">
+                                                                        <Icon size={14} />
+                                                                    </div>
+                                                                    <span className="text-charcoal font-medium text-sm whitespace-nowrap">{t.name}</span>
+                                                                </div>
+                                                                <span className="text-[10px] uppercase tracking-widest text-charcoal/40 shrink-0 ml-4">{t.duration}</span>
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    </div>
                                 </div>
-                                <div className="space-y-2">
+                                <div className="space-y-2 flex flex-col justify-center relative z-40">
                                     <label className="text-[10px] uppercase tracking-widest text-charcoal/40">Preferred Date</label>
-                                    <input type="date" className="w-full bg-transparent border-b border-charcoal/10 py-2 outline-none focus:border-charcoal transition-colors" />
+                                    <div className="w-full bg-white/60 backdrop-blur-md border border-charcoal/10 rounded-2xl px-6 py-4 transition-colors cursor-pointer hover:border-charcoal/30 flex items-center">
+                                        <DatePicker
+                                            selected={selectedDate}
+                                            onChange={(date: Date | null) => setSelectedDate(date)}
+                                            customInput={
+                                                <button type="button" className="text-left font-serif text-lg text-charcoal outline-none w-full bg-transparent">
+                                                    {formatDate(selectedDate)}
+                                                </button>
+                                            }
+                                            minDate={new Date()}
+                                            placeholderText="Select Date"
+                                            popperPlacement="top-start"
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
-                            <button className="w-full bg-charcoal text-cream py-6 rounded-full flex items-center justify-center gap-4 group hover:bg-black transition-all duration-300 shadow-xl">
-                                <span className="text-xs uppercase tracking-[0.4em] font-bold">Request Appointment</span>
+                            <div className="space-y-2">
+                                <label className="text-[10px] uppercase tracking-widest text-charcoal/40">Special Requests / Goals</label>
+                                <input type="text" className="w-full bg-white/60 backdrop-blur-md border border-charcoal/10 rounded-2xl px-6 py-4 outline-none focus:border-charcoal/30 transition-colors" placeholder="e.g. Deep tissue focus, stress relief" />
+                            </div>
+
+                            <button type="submit" className="w-full bg-charcoal text-cream py-5 rounded-full flex items-center justify-center gap-4 group hover:bg-black transition-all duration-300 shadow-xl shadow-charcoal/20 mt-4">
+                                <span className="text-xs uppercase tracking-[0.3em] font-bold">Reserver Ritual</span>
                                 <Send size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                             </button>
                         </form>

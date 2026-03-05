@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { wellnessData } from '../../data/wellness';
 import { ChevronDown, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function TreatmentAccordion() {
     const [openCategory, setOpenCategory] = useState<string | null>('Massages');
+    const navigate = useNavigate();
 
     return (
         <section className="py-24 max-w-5xl mx-auto px-6 relative z-10">
@@ -54,7 +56,10 @@ export default function TreatmentAccordion() {
                                                 </div>
                                                 <div className="flex items-center justify-between md:justify-end gap-12 pt-4 md:pt-0">
                                                     <span className="font-serif text-2xl text-charcoal/80">{treatment.price}</span>
-                                                    <button className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-bold text-charcoal hover:translate-x-2 transition-transform">
+                                                    <button
+                                                        onClick={() => navigate('/wellness-checkout', { state: { treatments: [treatment.name] } })}
+                                                        className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-bold text-charcoal hover:translate-x-2 transition-transform"
+                                                    >
                                                         Book <Plus size={14} strokeWidth={3} />
                                                     </button>
                                                 </div>

@@ -20,6 +20,7 @@ const Wellness = lazy(() => import('./pages/Wellness'));
 const Contact = lazy(() => import('./pages/Contact'));
 const RoomDetail = lazy(() => import('./pages/RoomDetail'));
 const Checkout = lazy(() => import('./pages/Checkout'));
+const WellnessCheckout = lazy(() => import('./pages/WellnessCheckout'));
 const Footer = lazy(() => import('./components/Footer'));
 
 function App() {
@@ -78,10 +79,11 @@ function App() {
                         <Route path="/contact" element={<Suspense fallback={<SectionLoader />}><PageTransition><Contact /></PageTransition></Suspense>} />
                         <Route path="/rooms/:id" element={<Suspense fallback={<SectionLoader />}><PageTransition><RoomDetail /></PageTransition></Suspense>} />
                         <Route path="/checkout" element={<Suspense fallback={<SectionLoader />}><PageTransition><Checkout /></PageTransition></Suspense>} />
+                        <Route path="/wellness-checkout" element={<Suspense fallback={<SectionLoader />}><PageTransition><WellnessCheckout /></PageTransition></Suspense>} />
                     </Routes>
                 </AnimatePresence>
 
-                {location.pathname !== '/checkout' && (
+                {(location.pathname !== '/checkout' && location.pathname !== '/wellness-checkout') && (
                     <Suspense fallback={null}>
                         <Footer />
                     </Suspense>

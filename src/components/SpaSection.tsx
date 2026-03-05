@@ -22,7 +22,10 @@ const treatments = [
     }
 ];
 
+import { useNavigate } from 'react-router-dom';
+
 export default function SpaSection() {
+    const navigate = useNavigate();
     return (
         <section id="wellness" className="relative py-32 overflow-hidden bg-[#FDFDFB]">
 
@@ -85,11 +88,14 @@ export default function SpaSection() {
                             <p className="text-charcoal/70 font-light leading-relaxed mb-8 min-h-[3rem]">
                                 {treatment.description}
                             </p>
-                            <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-charcoal/50">
+                            <button
+                                onClick={() => navigate('/wellness-checkout', { state: { treatments: [treatment.name] } })}
+                                className="flex items-center gap-2 text-xs uppercase tracking-widest text-charcoal/50 hover:text-charcoal transition-colors w-full cursor-pointer mt-4"
+                            >
                                 <span>{treatment.duration}</span>
                                 <div className="h-px flex-1 bg-charcoal/20" />
                                 <span>Book Now</span>
-                            </div>
+                            </button>
                         </motion.div>
                     ))}
                 </div>
